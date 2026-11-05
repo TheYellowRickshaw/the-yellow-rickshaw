@@ -523,6 +523,101 @@
   .po-fallback a{color:var(--yellow); text-decoration:underline; text-underline-offset:2px;}
   .po-fallback a:hover{color:var(--cream);}
 
+  /* ---------- CAREERS APPLICATION PAGE (light, split layout) ---------- */
+  .cf-overlay{
+    position:fixed; inset:0; z-index:300; background:var(--cream); color:var(--ink);
+    overflow-y:auto; display:none;
+  }
+  .cf-overlay.open{display:block;}
+  .cf-shell{display:grid; grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr); min-height:100%;}
+  .cf-aside{
+    background:var(--green); color:var(--cream); position:sticky; top:0; height:100vh;
+    padding:clamp(28px,4vw,56px); display:flex; flex-direction:column; gap:28px; overflow:hidden;
+  }
+  .cf-aside .wordmark{color:var(--cream);}
+  .cf-aside .eyebrow{color:var(--yellow);}
+  .cf-aside h1{
+    font-family:'Anton',sans-serif; text-transform:uppercase; line-height:0.95; margin:12px 0 0;
+    font-size:clamp(2.3rem,5vw,4rem); color:var(--cream);
+  }
+  .cf-aside h1 span{color:var(--yellow);}
+  .cf-aside .cf-lead{color:#cfe0d2; font-size:0.98rem; line-height:1.65; margin:0; max-width:42ch;}
+  .cf-steps{list-style:none; margin:auto 0 0; padding:0; display:flex; flex-direction:column; gap:14px;}
+  .cf-steps li{display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:baseline;
+    border-top:1px solid rgba(246,241,228,0.18); padding-top:14px; font-size:0.9rem; line-height:1.55; color:#cfe0d2;}
+  .cf-steps li b{font-family:'IBM Plex Mono',monospace; color:var(--yellow); font-weight:500; font-size:0.8rem;}
+  .cf-steps li strong{color:var(--cream); font-weight:600; display:block;}
+
+  .cf-close{
+    position:fixed; top:18px; right:18px; z-index:5; width:44px; height:44px; border-radius:50%;
+    background:var(--ink); color:var(--yellow); border:none; cursor:pointer; font-size:1.4rem; line-height:1;
+    display:flex; align-items:center; justify-content:center; transition:transform .2s ease;
+  }
+  .cf-close:hover{transform:rotate(90deg);}
+  .cf-close:focus-visible{outline:2px solid var(--green); outline-offset:3px;}
+
+  .cf-main{padding:clamp(40px,6vw,80px) clamp(20px,5vw,72px) 90px; max-width:720px; width:100%;}
+  .cf-main h2{font-size:1.45rem; font-weight:800; margin:0 0 6px; letter-spacing:-0.01em;}
+  .cf-main .cf-sub{color:#5f5b4f; margin:0 0 36px; font-size:0.95rem; line-height:1.6;}
+  .cf-group{margin-bottom:30px; border:0; padding:0; min-width:0;}
+  .cf-label, .cf-group legend{
+    display:flex; gap:10px; align-items:baseline; padding:0; margin-bottom:10px;
+    font-weight:700; font-size:0.95rem; color:var(--ink);
+  }
+  .cf-label i, .cf-group legend i{font-style:normal; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--green-2); font-weight:500;}
+  .cf-label .opt, .cf-group legend .opt{font-weight:400; color:#8a8577; font-size:0.82rem;}
+  .cf-hint{font-size:0.78rem; color:#7a7568; margin:6px 0 0; line-height:1.5;}
+  .cf-row{display:grid; grid-template-columns:1fr 1fr; gap:0 28px;}
+  .cf-field{margin-bottom:26px; min-width:0;}
+  .cf-field input, .cf-field textarea{
+    width:100%; background:transparent; border:none; border-bottom:2px solid #cfc8b4; border-radius:0;
+    padding:10px 2px; font:inherit; font-size:1rem; color:var(--ink); transition:border-color .18s ease;
+  }
+  .cf-field textarea{min-height:110px; resize:vertical; line-height:1.55; border:2px solid #cfc8b4; padding:12px; border-radius:4px;}
+  .cf-field input::placeholder, .cf-field textarea::placeholder{color:#a8a291;}
+  .cf-field input:focus, .cf-field textarea:focus{outline:none; border-color:var(--green);}
+  .cf-chips{display:flex; flex-wrap:wrap; gap:10px;}
+  .cf-chip{position:relative;}
+  .cf-chip input{position:absolute; opacity:0; inset:0; margin:0; cursor:pointer;}
+  .cf-chip span{
+    display:inline-block; padding:10px 16px; border-radius:999px; border:1.5px solid #cfc8b4;
+    font-size:0.88rem; font-weight:600; color:var(--ink); background:#fbf8f0; cursor:pointer;
+    transition:background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .cf-chip:hover span{border-color:var(--green);}
+  .cf-chip input:checked + span{background:var(--green); border-color:var(--green); color:var(--cream);}
+  .cf-chip input:focus-visible + span{outline:2px solid var(--yellow); outline-offset:2px;}
+  .cf-err{display:none; color:#b3261e; font-size:0.8rem; margin-top:6px;}
+  .has-error .cf-err{display:block;}
+  .cf-field.has-error input, .cf-field.has-error textarea{border-color:#b3261e;}
+  .cf-group.has-error .cf-chip span{border-color:#e3a19b;}
+  .cf-submit{
+    width:100%; display:flex; justify-content:space-between; align-items:center;
+    background:var(--ink); color:var(--yellow); border:none; border-radius:4px; cursor:pointer;
+    padding:18px 22px; font:inherit; font-weight:800; font-size:1rem; letter-spacing:0.01em;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .cf-submit:hover{background:var(--green); transform:translateY(-1px);}
+  .cf-submit:disabled{opacity:0.6; cursor:not-allowed; transform:none;}
+  .cf-submit:focus-visible{outline:2px solid var(--green); outline-offset:3px;}
+  .cf-status{display:none; margin-top:18px; font-size:0.92rem; line-height:1.6;}
+  .cf-status.show{display:block;}
+  .cf-status.is-error{color:#b3261e;}
+  .cf-status.is-done{background:#fff; border:2px solid var(--green); border-radius:6px; padding:18px 20px; color:var(--ink);}
+  .cf-status.is-done b{display:block; font-family:'Anton',sans-serif; text-transform:uppercase; font-size:1.2rem; color:var(--green); margin-bottom:4px; font-weight:400;}
+  .cf-status .cta-actions{justify-content:flex-start; margin-top:14px;}
+  .cf-status .btn-outline{color:var(--ink); border-color:#cfc8b4;}
+  .cf-foot{margin-top:18px; font-size:0.8rem; color:#7a7568; line-height:1.6;}
+  .cf-foot a{color:var(--green-2); text-decoration:underline; text-underline-offset:2px;}
+
+  @media (max-width:860px){
+    .cf-shell{grid-template-columns:1fr;}
+    .cf-aside{position:relative; height:auto; gap:18px; padding-top:72px;}
+    .cf-steps{margin-top:6px;}
+    .cf-close{background:var(--yellow); color:var(--ink);}
+  }
+  @media (max-width:560px){ .cf-row{grid-template-columns:1fr;} }
+
   /* ---------- FOOTER ---------- */
   footer{padding:48px 0 40px;}
   .foot-row{
@@ -919,7 +1014,7 @@
       <div class="careers-note reveal">
         <p><b style="color:var(--cream)">We're not actively hiring this minute</b> &mdash; but we're building a short list of people worth calling the moment a seat opens. If one of these sounds like you, send your portfolio or resume and a line on what you'd want to work on.</p>
         <div class="cta-actions" style="justify-content:flex-start;">
-          <a class="btn" href="mailto:theyellowrickshawagency@gmail.com?subject=Interested%20in%20working%20at%20The%20Yellow%20Rickshaw">Send Your Portfolio</a>
+          <button type="button" class="btn" id="careersBtn">Send Your Portfolio</button>
         </div>
       </div>
     </div>
@@ -1039,6 +1134,109 @@
       <div class="po-status" id="poStatus" role="status"></div>
       <p class="po-fallback">Trouble sending? Email us directly at <a href="mailto:theyellowrickshawagency@gmail.com?subject=New%20project%20enquiry">theyellowrickshawagency@gmail.com</a> or <a href="https://wa.me/919958127005" target="_blank" rel="noopener">WhatsApp us</a> instead.</p>
     </form>
+  </div>
+</div>
+
+<!-- CAREERS: full-page application form (light, split layout) -->
+<div class="cf-overlay" id="careersPage" role="dialog" aria-modal="true" aria-labelledby="careersTitle">
+  <button type="button" class="cf-close" id="cfCloseBtn" aria-label="Close">&times;</button>
+  <div class="cf-shell">
+    <aside class="cf-aside">
+      <span class="wordmark"><img class="nav-logo" src="" alt="" id="cfLogoImg" width="32" height="32">YELLOW RICKSHAW</span>
+      <div>
+        <span class="eyebrow">Careers &middot; Join the crew</span>
+        <h1 id="careersTitle">Hop on the <span>rickshaw</span></h1>
+      </div>
+      <p class="cf-lead">We're small by design, which means real ownership from day one. Tell us who you are and show us your best work &mdash; we keep a short list of people worth calling the moment a seat opens.</p>
+      <ol class="cf-steps">
+        <li><b>01</b><span><strong>We read every application</strong>Personally &mdash; no bots, no keyword filters.</span></li>
+        <li><b>02</b><span><strong>You join our shortlist</strong>When a role that fits you opens, you're the first we call.</span></li>
+        <li><b>03</b><span><strong>A conversation, then a small task</strong>So we can see how you think, not just what's on paper.</span></li>
+      </ol>
+    </aside>
+
+    <main class="cf-main">
+      <h2>Your application</h2>
+      <p class="cf-sub">Takes about 3 minutes. Fields marked <i style="font-style:normal;color:#8a8577">(optional)</i> can be skipped.</p>
+
+      <form id="careersForm" novalidate>
+        <fieldset class="cf-group" id="cfRoleGroup">
+          <legend><i>01</i>Which role are you interested in?</legend>
+          <div class="cf-chips">
+            <label class="cf-chip"><input type="radio" name="Role" value="Content &amp; Social"><span>Content &amp; Social</span></label>
+            <label class="cf-chip"><input type="radio" name="Role" value="Performance Marketing"><span>Performance Marketing</span></label>
+            <label class="cf-chip"><input type="radio" name="Role" value="Client Servicing"><span>Client Servicing</span></label>
+            <label class="cf-chip"><input type="radio" name="Role" value="Something else"><span>Something else</span></label>
+          </div>
+          <span class="cf-err">Pick the role closest to you.</span>
+        </fieldset>
+
+        <div class="cf-label"><i>02</i>About you</div>
+        <div class="cf-row">
+          <div class="cf-field">
+            <input type="text" id="cfName" name="Full Name" autocomplete="name" placeholder="Full name" aria-label="Full name">
+            <span class="cf-err">Please enter your full name.</span>
+          </div>
+          <div class="cf-field">
+            <input type="text" id="cfCity" name="City" autocomplete="address-level2" placeholder="City you're based in" aria-label="City">
+            <span class="cf-err">Please tell us your city.</span>
+          </div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-field">
+            <input type="email" id="cfEmail" name="Email" autocomplete="email" placeholder="Email address" aria-label="Email address">
+            <span class="cf-err">Please enter a valid email address.</span>
+          </div>
+          <div class="cf-field">
+            <input type="tel" id="cfPhone" name="Phone" autocomplete="tel" placeholder="Phone / WhatsApp number" aria-label="Phone or WhatsApp number">
+            <span class="cf-err">Please enter a valid phone number.</span>
+          </div>
+        </div>
+
+        <fieldset class="cf-group" id="cfExpGroup">
+          <legend><i>03</i>How much experience do you have?</legend>
+          <div class="cf-chips">
+            <label class="cf-chip"><input type="radio" name="Experience" value="Fresher"><span>Fresher</span></label>
+            <label class="cf-chip"><input type="radio" name="Experience" value="1-3 years"><span>1&ndash;3 yrs</span></label>
+            <label class="cf-chip"><input type="radio" name="Experience" value="3-5 years"><span>3&ndash;5 yrs</span></label>
+            <label class="cf-chip"><input type="radio" name="Experience" value="5+ years"><span>5+ yrs</span></label>
+          </div>
+          <span class="cf-err">Choose your experience level.</span>
+        </fieldset>
+
+        <fieldset class="cf-group" id="cfTypeGroup">
+          <legend><i>04</i>What are you looking for?</legend>
+          <div class="cf-chips">
+            <label class="cf-chip"><input type="radio" name="Looking For" value="Full-time"><span>Full-time</span></label>
+            <label class="cf-chip"><input type="radio" name="Looking For" value="Part-time / Freelance"><span>Part-time / Freelance</span></label>
+            <label class="cf-chip"><input type="radio" name="Looking For" value="Internship"><span>Internship</span></label>
+          </div>
+          <span class="cf-err">Choose one option.</span>
+        </fieldset>
+
+        <div class="cf-label"><i>05</i>Your work</div>
+        <div class="cf-field">
+          <input type="text" id="cfPortfolio" name="Portfolio / Resume Link" autocomplete="url" placeholder="Portfolio or resume link" aria-label="Portfolio or resume link">
+          <p class="cf-hint">Google Drive, Behance, Notion, a website or a PDF link &mdash; make sure it opens for &ldquo;anyone with the link&rdquo;.</p>
+          <span class="cf-err">Please add a link we can open (e.g. drive.google.com/&hellip;).</span>
+        </div>
+        <div class="cf-field">
+          <input type="text" id="cfLinkedIn" name="LinkedIn" placeholder="LinkedIn profile (optional)" aria-label="LinkedIn profile, optional">
+        </div>
+
+        <div class="cf-label"><i>06</i>What would you want to work on here?</div>
+        <div class="cf-field">
+          <textarea id="cfWhy" name="What they'd want to work on" placeholder="A few lines on the work that excites you, and why The Yellow Rickshaw." aria-label="What would you want to work on here"></textarea>
+          <span class="cf-err">Tell us a little more (at least a sentence or two).</span>
+        </div>
+
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+        <button type="submit" class="cf-submit" id="cfSubmitBtn"><span>Send Application</span><span aria-hidden="true">&rarr;</span></button>
+        <div class="cf-status" id="cfStatus" role="status"></div>
+        <p class="cf-foot">Prefer email? Send your portfolio to <a href="mailto:theyellowrickshawagency@gmail.com?subject=Application%20-%20The%20Yellow%20Rickshaw">theyellowrickshawagency@gmail.com</a>.</p>
+      </form>
+    </main>
   </div>
 </div>
 
@@ -1433,21 +1631,23 @@
         d["What's on your mind"];
     }
 
-    function send(d){
+    function send(d, subject, replyTo){
       var url, payload;
       if (WEB3FORMS_KEY) {
         url = 'https://api.web3forms.com/submit';
         payload = {
           access_key: WEB3FORMS_KEY,
-          subject: 'New project enquiry - The Yellow Rickshaw website',
+          subject: subject,
           from_name: 'The Yellow Rickshaw website',
-          replyto: d['Your Email']
+          replyto: replyTo
         };
         Object.keys(d).forEach(function(k){ if (k.charAt(0) !== '_') payload[k] = d[k]; });
       } else {
         url = 'https://formsubmit.co/ajax/' + INBOX;
-        payload = d;
-        payload._replyto = d['Your Email'];
+        payload = {};
+        Object.keys(d).forEach(function(k){ payload[k] = d[k]; });
+        payload._subject = subject;
+        payload._replyto = replyTo;
       }
       var ctrl = window.AbortController ? new AbortController() : null;
       var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 20000);
@@ -1465,6 +1665,8 @@
         });
       }, function(err){ clearTimeout(timer); throw err; });
     }
+    // shared with the careers application form
+    window.YRForms = { send: send, INBOX: INBOX, WHATSAPP: WHATSAPP };
 
     var sending = false;
     form.addEventListener('submit', function(e){
@@ -1487,7 +1689,7 @@
       submitBtn.textContent = 'Sending...';
       status.className = 'po-status';
 
-      send(d).then(function(){
+      send(d, 'New project enquiry - The Yellow Rickshaw website', d['Your Email']).then(function(){
         showSuccess();
       }, function(err){
         if (window.console) console.warn('Enquiry send failed:', err);
@@ -1520,6 +1722,167 @@
         '<div class="cta-actions" style="justify-content:flex-start; margin-top:14px;">' +
         '<a class="btn" target="_blank" rel="noopener" href="' + wa + '">Send via WhatsApp</a>' +
         '<a class="btn btn-outline" href="' + mail + '">Send via Email</a></div>';
+    }
+  })();
+
+  // Careers: "Send Your Portfolio" opens the full-page application form
+  (function(){
+    var openBtn = document.getElementById('careersBtn');
+    var page = document.getElementById('careersPage');
+    var closeBtn = document.getElementById('cfCloseBtn');
+    var form = document.getElementById('careersForm');
+    var submitBtn = document.getElementById('cfSubmitBtn');
+    var status = document.getElementById('cfStatus');
+    if (!openBtn || !page || !form) return;
+
+    var realLogo = document.querySelector('.nav-logo');
+    var logo = document.getElementById('cfLogoImg');
+    if (realLogo && logo) { logo.src = realLogo.src; logo.alt = realLogo.alt; }
+
+    function openPage(){
+      page.classList.add('open');
+      page.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+      var first = form.querySelector('input[name="Role"]');
+      if (first) first.focus();
+    }
+    function closePage(){
+      if (!page.classList.contains('open')) return;
+      page.classList.remove('open');
+      document.body.style.overflow = '';
+      if (location.hash === '#apply') history.replaceState(null, '', location.pathname + location.search);
+      openBtn.focus();
+    }
+    openBtn.addEventListener('click', openPage);
+    closeBtn.addEventListener('click', closePage);
+    document.addEventListener('keydown', function(e){
+      if (!page.classList.contains('open')) return;
+      if (e.key === 'Escape') closePage();
+      if (e.key === 'Tab') {
+        var f = page.querySelectorAll('button, a[href], input:not([name=_honey]), textarea');
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    // shareable link: yoursite.com/#apply opens the application form directly
+    if (location.hash === '#apply') openPage();
+    window.addEventListener('hashchange', function(){ if (location.hash === '#apply') openPage(); });
+
+    // ---- validation ----
+    var textRules = {
+      cfName:      function(v){ return v.length >= 2; },
+      cfCity:      function(v){ return v.length >= 2; },
+      cfEmail:     function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); },
+      cfPhone:     function(v){ return v.replace(/\D/g,'').length >= 10 && /^[+\d\s\-()]+$/.test(v); },
+      cfPortfolio: function(v){ return /^\S+\.\S{2,}$/.test(v) && v.length >= 6; },
+      cfWhy:       function(v){ return v.length >= 20; }
+    };
+    var groups = { cfRoleGroup: 'Role', cfExpGroup: 'Experience', cfTypeGroup: 'Looking For' };
+
+    function checkText(id){
+      var input = document.getElementById(id);
+      var ok = textRules[id](input.value.trim());
+      input.parentNode.classList.toggle('has-error', !ok);
+      input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      return ok;
+    }
+    function checkGroup(id){
+      var ok = !!form.querySelector('input[name="' + groups[id] + '"]:checked');
+      document.getElementById(id).classList.toggle('has-error', !ok);
+      return ok;
+    }
+    Object.keys(textRules).forEach(function(id){
+      var input = document.getElementById(id);
+      input.addEventListener('blur', function(){ if (input.value.trim()) checkText(id); });
+      input.addEventListener('input', function(){ if (input.parentNode.classList.contains('has-error')) checkText(id); });
+    });
+    Object.keys(groups).forEach(function(id){
+      document.getElementById(id).addEventListener('change', function(){ checkGroup(id); });
+    });
+    function validateAll(){
+      var firstBad = null;
+      // check in on-screen order so focus jumps to the first problem
+      ['cfRoleGroup','cfName','cfCity','cfEmail','cfPhone','cfExpGroup','cfTypeGroup','cfPortfolio','cfWhy'].forEach(function(id){
+        var ok = groups[id] ? checkGroup(id) : checkText(id);
+        if (!ok && !firstBad) firstBad = groups[id] ? document.getElementById(id).querySelector('input') : document.getElementById(id);
+      });
+      if (firstBad) { firstBad.focus(); firstBad.scrollIntoView({block:'center'}); }
+      return !firstBad;
+    }
+
+    function collect(){
+      var d = {};
+      Array.prototype.forEach.call(form.elements, function(el){
+        if (!el.name || el.name === '_honey' || el.type === 'submit') return;
+        if (el.type === 'radio') { if (el.checked) d[el.name] = el.value; return; }
+        d[el.name] = el.value.trim();
+      });
+      if (!d['LinkedIn']) d['LinkedIn'] = 'Not provided';
+      return d;
+    }
+    function applicationText(d){
+      return 'Job application - The Yellow Rickshaw\n\n' +
+        'Name: ' + d['Full Name'] + '\n' +
+        'Role: ' + d['Role'] + '\n' +
+        'Experience: ' + d['Experience'] + '\n' +
+        'Looking for: ' + d['Looking For'] + '\n' +
+        'City: ' + d['City'] + '\n' +
+        'Email: ' + d['Email'] + '\n' +
+        'Phone: ' + d['Phone'] + '\n' +
+        'Portfolio / resume: ' + d['Portfolio / Resume Link'] + '\n' +
+        'LinkedIn: ' + d['LinkedIn'] + '\n\n' +
+        d["What they'd want to work on"];
+    }
+
+    var sending = false;
+    var btnLabel = submitBtn.querySelector('span');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (sending) return;
+      var honey = form.querySelector('[name="_honey"]');
+      if (honey && honey.value) { showDone(); return; }
+      if (!validateAll()) {
+        status.className = 'cf-status show is-error';
+        status.textContent = 'A few answers need another look — they’re marked in red.';
+        return;
+      }
+      var d = collect();
+      if (!window.YRForms) { showFallback(d); return; }
+      sending = true;
+      submitBtn.disabled = true;
+      btnLabel.textContent = 'Sending...';
+      status.className = 'cf-status';
+      window.YRForms.send(d, 'Job application: ' + d['Role'] + ' - ' + d['Full Name'], d['Email'])
+        .then(showDone, function(err){
+          if (window.console) console.warn('Application send failed:', err);
+          showFallback(d);
+        })
+        .then(function(){
+          sending = false;
+          submitBtn.disabled = false;
+          btnLabel.textContent = 'Send Application';
+        });
+    });
+
+    function showDone(){
+      status.className = 'cf-status show is-done';
+      status.innerHTML = '<b>Application received.</b>Thank you for wanting to ride with us. We read every application and will reach out when a seat that fits you opens up.';
+      form.reset();
+      form.querySelectorAll('.has-error').forEach(function(el){ el.classList.remove('has-error'); });
+      status.scrollIntoView({block:'center'});
+    }
+    function showFallback(d){
+      var Y = window.YRForms || { INBOX:'theyellowrickshawagency@gmail.com', WHATSAPP:'919958127005' };
+      var text = applicationText(d);
+      var mail = 'mailto:' + Y.INBOX + '?subject=' + encodeURIComponent('Application: ' + d['Role'] + ' - ' + d['Full Name']) + '&body=' + encodeURIComponent(text);
+      var wa = 'https://wa.me/' + Y.WHATSAPP + '?text=' + encodeURIComponent(text);
+      status.className = 'cf-status show is-done';
+      status.innerHTML = '<b>Almost there.</b>Our form service didn’t respond, so your application hasn’t reached us yet. ' +
+        'Tap one of these to send it instantly — everything you typed is already filled in:' +
+        '<div class="cta-actions"><a class="btn" href="' + mail + '">Send via Email</a>' +
+        '<a class="btn btn-outline" target="_blank" rel="noopener" href="' + wa + '">Send via WhatsApp</a></div>';
+      status.scrollIntoView({block:'center'});
     }
   })();
 </script>
