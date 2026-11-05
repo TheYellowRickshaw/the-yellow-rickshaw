@@ -966,10 +966,10 @@
   <div class="po-body">
     <span class="eyebrow">Let's Move Your Brand</span>
     <h1 id="projectPageTitle">Start a project</h1>
-    <p class="po-sub">Tell us a bit about you and what you're working on. This goes straight to our inbox &mdash; we'll come back to you within a couple of days.</p>
+    <p class="po-sub">Tell us a bit about you and what you're working on. This comes straight to us &mdash; we'll come back to you within a couple of days.</p>
     <p class="po-package" id="poPackageNote"></p>
 
-    <form id="projectForm" action="https://formsubmit.co/theyellowrickshawagency@gmail.com" method="POST" target="_blank" rel="noopener" novalidate>
+    <form id="projectForm" action="https://formsubmit.co/theyellowrickshawagency@gmail.com" method="POST" novalidate>
       <div class="po-field">
         <label for="poName">Your Name</label>
         <input type="text" id="poName" name="Your Name" autocomplete="name" required>
@@ -1371,53 +1371,124 @@
       return !firstBad;
     }
 
-    // Published artifact pages run sandboxed and can't fetch() arbitrary third-party
-    // APIs directly, so this submits as a real HTML form POST (a native browser
-    // navigation, not a script-initiated request) to FormSubmit, which emails the
-    // result to our inbox. target="_blank" opens that confirmation in a new tab so
-    // this page stays exactly where it is.
-    // (mailto: was tried here and pulled back out - it depends on the visitor having
-    // a desktop mail app configured as their system default, which most people on
-    // phones or using Gmail/Outlook in-browser simply don't have, so it looked
-    // "broken" even when the code itself was firing correctly.)
-    form.addEventListener('submit', function(e){
-      // honeypot: if filled, it's a bot - block the real submission silently
-      var honey = form.querySelector('[name="_honey"]');
-      if (honey && honey.value) {
-        e.preventDefault();
-        showSuccess();
-        return;
+    // ---- Sending ----
+    // Enquiries are sent in the background and the visitor only sees "sent" once the
+    // email service actually confirms it. If the service is down, the visitor gets
+    // one-tap WhatsApp / email buttons with their enquiry pre-filled, so no lead is lost.
+    //
+    // WEB3FORMS_KEY: paste the free access key from web3forms.com here to use Web3Forms
+    // (more reliable). Left empty, the form uses FormSubmit.
+    var WEB3FORMS_KEY = '';
+    var INBOX = 'theyellowrickshawagency@gmail.com';
+    var WHATSAPP = '919958127005';
+
+    function collect(){
+      var data = {};
+      Array.prototype.forEach.call(form.elements, function(el){
+        if (!el.name || el.name === '_honey' || el.type === 'submit') return;
+        data[el.name] = el.value.trim();
+      });
+      return data;
+    }
+
+    function enquiryText(d){
+      return 'New project enquiry - The Yellow Rickshaw\n\n' +
+        'Name: ' + d['Your Name'] + '\n' +
+        'Organisation: ' + d['Organisation Name'] + '\n' +
+        'Email: ' + d['Your Email'] + '\n' +
+        'Phone: ' + d['Your Number'] + '\n' +
+        (d['Website / Social Media Link'] ? 'Link: ' + d['Website / Social Media Link'] + '\n' : '') +
+        'Package: ' + d['Package Interested'] + '\n\n' +
+        d["What's on your mind"];
+    }
+
+    function send(d){
+      var url, payload;
+      if (WEB3FORMS_KEY) {
+        url = 'https://api.web3forms.com/submit';
+        payload = {
+          access_key: WEB3FORMS_KEY,
+          subject: 'New project enquiry - The Yellow Rickshaw website',
+          from_name: 'The Yellow Rickshaw website',
+          replyto: d['Your Email']
+        };
+        Object.keys(d).forEach(function(k){ if (k.charAt(0) !== '_') payload[k] = d[k]; });
+      } else {
+        url = 'https://formsubmit.co/ajax/' + INBOX;
+        payload = d;
+        payload._replyto = d['Your Email'];
       }
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 20000);
+      return fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: ctrl ? ctrl.signal : undefined
+      }).then(function(res){
+        clearTimeout(timer);
+        return res.json().catch(function(){ return {}; }).then(function(json){
+          var ok = res.ok && (json.success === true || json.success === 'true');
+          if (!ok) throw new Error(json.message || ('HTTP ' + res.status));
+          return json;
+        });
+      }, function(err){ clearTimeout(timer); throw err; });
+    }
+
+    var sending = false;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (sending) return;
+
+      // honeypot: if filled, it's a bot - pretend success, send nothing
+      var honey = form.querySelector('[name="_honey"]');
+      if (honey && honey.value) { showSuccess(); return; }
 
       if (!validateAll()) {
-        e.preventDefault();
         status.className = 'po-status show is-error';
         status.textContent = 'Please fix the highlighted fields and try again.';
         return;
       }
 
-      // let the native form submission proceed to FormSubmit in the new tab
-      showSuccess();
+      var d = collect();
+      sending = true;
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending...';
-      setTimeout(function(){
+      status.className = 'po-status';
+
+      send(d).then(function(){
+        showSuccess();
+      }, function(err){
+        if (window.console) console.warn('Enquiry send failed:', err);
+        showFallback(d);
+      }).then(function(){
+        sending = false;
         submitBtn.disabled = false;
         submitBtn.textContent = 'Send It Over';
-      }, 2200);
+      });
     });
 
+    function resetForm(){
+      form.reset();
+      packageInput.value = 'Not specified';
+      packageNote.classList.remove('show');
+      form.querySelectorAll('.has-error').forEach(function(el){ el.classList.remove('has-error'); });
+    }
     function showSuccess(){
       status.className = 'po-status show is-success';
-      status.innerHTML = '<b>On its way.</b>A confirmation tab will open to complete the send &mdash; you can close it and stay right here. We\'ll be in touch within a couple of days.';
-      setTimeout(function(){
-        form.reset();
-        packageInput.value = 'Not specified';
-        form.querySelectorAll('.has-error').forEach(function(el){ el.classList.remove('has-error'); });
-      }, 300);
+      status.innerHTML = '<b>Got it &mdash; thank you.</b>Your enquiry has reached our inbox. We\'ll be in touch within a couple of days.';
+      resetForm();
     }
-    function showError(){
-      status.className = 'po-status show is-error';
-      status.textContent = 'Something went wrong sending that. Please try again, or email us directly at theyellowrickshawagency@gmail.com.';
+    function showFallback(d){
+      var text = enquiryText(d);
+      var wa = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text);
+      var mail = 'mailto:' + INBOX + '?subject=' + encodeURIComponent('New project enquiry') + '&body=' + encodeURIComponent(text);
+      status.className = 'po-status show is-success';
+      status.innerHTML = '<b>Almost there.</b>Our form service didn\'t respond, so your message hasn\'t reached us yet. ' +
+        'Tap one of these to send it instantly &mdash; your details are already filled in:' +
+        '<div class="cta-actions" style="justify-content:flex-start; margin-top:14px;">' +
+        '<a class="btn" target="_blank" rel="noopener" href="' + wa + '">Send via WhatsApp</a>' +
+        '<a class="btn btn-outline" href="' + mail + '">Send via Email</a></div>';
     }
   })();
 </script>
