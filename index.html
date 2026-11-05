@@ -112,10 +112,13 @@
   }
   .btn-outline:hover{border-color:var(--yellow); color:var(--yellow); background:transparent;}
   .menu-toggle{display:none;}
+  .wordmark, .navlinks a{white-space:nowrap;}
 
-  @media (max-width: 760px){
+  /* Switch to the hamburger menu before the links run out of room (tablets, small laptops) */
+  @media (max-width: 1000px){
     .navlinks{
-      position:fixed; inset:64px 0 auto 0; background:var(--ink);
+      position:fixed; inset:65px 0 auto 0; background:var(--ink);
+      max-height:calc(100vh - 65px); overflow-y:auto;
       flex-direction:column; align-items:flex-start; gap:0;
       border-bottom:1px solid var(--line);
       padding:8px clamp(20px,5vw,56px) 20px;
